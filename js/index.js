@@ -7,35 +7,26 @@ function popupOpen() {
 
 editButton.addEventListener('click', popupOpen);
 
-// let closeButton = document.querySelector('.popup__close-button');
+let closeButton = document.querySelector('.popup__close-button');
 
-// function popupClose() {
-//     popup.classList.remove('popup_opened');
-// }
+function popupClose() {
+    popup.classList.remove('popup_opened');
+}
 
-// closeButton.addEventListener('click', popupClose);
+closeButton.addEventListener('click', popupClose);
 
 
-// // Находим форму в DOM
-// let formElement = document.querySelector('.popup__save-button'); // Воспользуйтесь методом querySelector()
-// // Находим поля формы в DOM
-// let nameInput = document.querySelector('.popup__input_name'); // Воспользуйтесь инструментом .querySelector()
-// let aboutMeInput = document.querySelector('.popup__input_about-me'); // Воспользуйтесь инструментом .querySelector()
+let formElement = document.querySelector('.popup__container');
+let nameInput = document.querySelector('.popup__input_name');
+let aboutMeInput = document.querySelector('.popup__input_about-me');
+let profileName = document.querySelector('.profile__name');
+let profileAboutMe = document.querySelector('.profile__about-me');
 
-// // Обработчик «отправки» формы, хотя пока
-// // она никуда отправляться не будет
-// function formSubmitHandler(evt) {
-//     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-//     // Так мы можем определить свою логику отправки.
-//     // О том, как это делать, расскажем позже.
+function formSubmitHandler(evt) {
+    evt.preventDefault();
+    profileName.textContent = nameInput.value;
+    profileAboutMe.textContent = aboutMeInput.value;
+    popupClose();
+}
 
-//     // Получите значение полей aboutMeInput и nameInput из свойства value
-
-//     // Выберите элементы, куда должны быть вставлены значения полей
-
-//     // Вставьте новые значения с помощью textContent
-// }
-
-// // Прикрепляем обработчик к форме:
-// // он будет следить за событием “submit” - «отправка»
-// formElement.addEventListener('submit', formSubmitHandler); 
+formElement.addEventListener('submit', formSubmitHandler);
