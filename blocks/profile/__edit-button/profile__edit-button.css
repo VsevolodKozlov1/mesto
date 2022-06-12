@@ -7,3 +7,14 @@
     box-sizing: border-box;
     padding: 0;
 }
+
+@media screen and (max-width: 767px) {
+    .profile__edit-button {
+        position: absolute;
+        bottom: calc(50px + 34px + 17px + 14px);
+        left: calc(50% + 190px / 2 + 10px);
+        align-self: end;
+        width: 18px;
+        height: 18px;
+    }
+}

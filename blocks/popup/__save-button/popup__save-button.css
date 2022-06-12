@@ -12,3 +12,13 @@
     margin: 48px 0 0;
     padding: 0;
 }
+
+@media screen and (max-width: 767px) {
+    .popup__save-button {
+        width: 238px;
+        height: 46px;
+        font-size: 14px;
+        line-height: 1.21;
+        margin-top: 45px;
+    }
+}
