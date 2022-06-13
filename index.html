@@ -19,12 +19,12 @@
       <img src="images/avatar.jpg" alt="Аватар" class="profile__avatar">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
-        <button class="profile__edit-button button-hover">
+        <button type="button" class="profile__edit-button button-hover">
           <img src="images/edit-icon.svg" alt="Редактировать" class="profile__edit-icon">
         </button>
         <p class="profile__about-me">Исследователь океана</p>
       </div>
-      <button class="profile__add-button button-hover">
+      <button type="button" class="profile__add-button button-hover">
         <img src="images/add-icon.svg" alt="Добавить" class="profile__add-icon">
       </button>
     </section>
@@ -32,67 +32,78 @@
       <div class="gallery__item">
         <img src="images/karachaevsk.jpg" alt="Карачаевск" class="gallery__photo">
         <div class="gallery__caption">
-          <p class="gallery__item-descr">Карачаевск</p>
-          <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon button-hover">
+          <h2 class="gallery__item-descr">Карачаевск</h2>
+          <button type="button" class="gallery__like-button button-hover">
+            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
+          </button>
         </div>
       </div>
       <div class="gallery__item">
         <img src="images/elbrus.jpg" alt="Гора Эльбрус" class="gallery__photo">
         <div class="gallery__caption">
-          <p class="gallery__item-descr">Гора Эльбрус</p>
-          <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon button-hover">
+          <h2 class="gallery__item-descr">Гора Эльбрус</h2>
+          <button type="button" class="gallery__like-button button-hover">
+            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
+          </button>
         </div>
       </div>
       <div class="gallery__item">
         <img src="images/dombai.jpg" alt="Домбай" class="gallery__photo">
         <div class="gallery__caption">
-          <p class="gallery__item-descr">Домбай</p>
-          <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon button-hover">
+          <h2 class="gallery__item-descr">Домбай</h2>
+          <button type="button" class="gallery__like-button button-hover">
+            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
+          </button>
         </div>
       </div>
       <div class="gallery__item">
         <img src="images/elbrus.jpg" alt="Гора Эльбрус" class="gallery__photo">
         <div class="gallery__caption">
-          <p class="gallery__item-descr">Гора Эльбрус</p>
-          <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon button-hover">
+          <h2 class="gallery__item-descr">Гора Эльбрус</h2>
+          <button type="button" class="gallery__like-button button-hover">
+            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
+          </button>
         </div>
       </div>
       <div class="gallery__item">
         <img src="images/dombai.jpg" alt="Домбай" class="gallery__photo">
         <div class="gallery__caption">
-          <p class="gallery__item-descr">Домбай</p>
-          <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon button-hover">
+          <h2 class="gallery__item-descr">Домбай</h2>
+          <button type="button" class="gallery__like-button button-hover">
+            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
+          </button>
         </div>
       </div>
       <div class="gallery__item">
         <img src="images/karachaevsk.jpg" alt="Карачаево-Черкессия" class="gallery__photo">
         <div class="gallery__caption">
-          <p class="gallery__item-descr">Карачаево-Черкессия</p>
-          <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon button-hover">
+          <h2 class="gallery__item-descr">Карачаево-Черкессия</h2>
+          <button type="button" class="gallery__like-button button-hover">
+            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
+          </button>
         </div>
       </div>
     </section>
-
-
   </main>
 
   <footer class="footer">
     <p class="footer__copyright">© 2020 Mesto Russia</p>
   </footer>
+
   <div class="popup">
     <div class="popup__container">
-      <form>
-        <h2 class="popup__header">Редактировать профиль</h2>
-        <input type="text" class="popup__input popup__input_name" value="Жак-Ив Кусто">
-        <input type="text" class="popup__input popup__input_about-me" value="Исследователь океана">
+      <h2 class="popup__header">Редактировать профиль</h2>
+      <form class="popup__form" name="profile-edit-form">
+        <input type="text" class="popup__input popup__input_personal-data_name" name="personal-data_name">
+        <input type="text" class="popup__input popup__input_personal-data_about-me" name="ppersonal-data_about-me">
         <input type="submit" class="popup__save-button button-hover" value="Сохранить">
       </form>
-      <button class="popup__close-button button-hover">
+      <button type="button" class="popup__close-button button-hover">
         <img src="images/сlose-icon.svg" alt="Закрыть" class="popup__close-icon">
       </button>
     </div>
   </div>
-  <script src="js/index.js"></script>
+  <script src="scripts/index.js"></script>
 </body>
 
 </html>
