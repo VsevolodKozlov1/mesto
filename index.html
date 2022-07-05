@@ -28,76 +28,57 @@
         <img src="images/add-icon.svg" alt="Добавить" class="profile__add-icon">
       </button>
     </section>
-    <section class="gallery">
-      <div class="gallery__item">
-        <img src="images/karachaevsk.jpg" alt="Карачаевск" class="gallery__photo">
-        <div class="gallery__caption">
-          <h2 class="gallery__item-descr">Карачаевск</h2>
-          <button type="button" class="gallery__like-button button-hover">
-            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
-          </button>
-        </div>
-      </div>
-      <div class="gallery__item">
-        <img src="images/elbrus.jpg" alt="Гора Эльбрус" class="gallery__photo">
-        <div class="gallery__caption">
-          <h2 class="gallery__item-descr">Гора Эльбрус</h2>
-          <button type="button" class="gallery__like-button button-hover">
-            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
-          </button>
-        </div>
-      </div>
-      <div class="gallery__item">
-        <img src="images/dombai.jpg" alt="Домбай" class="gallery__photo">
-        <div class="gallery__caption">
-          <h2 class="gallery__item-descr">Домбай</h2>
-          <button type="button" class="gallery__like-button button-hover">
-            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
-          </button>
-        </div>
-      </div>
-      <div class="gallery__item">
-        <img src="images/elbrus.jpg" alt="Гора Эльбрус" class="gallery__photo">
-        <div class="gallery__caption">
-          <h2 class="gallery__item-descr">Гора Эльбрус</h2>
-          <button type="button" class="gallery__like-button button-hover">
-            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
-          </button>
-        </div>
-      </div>
-      <div class="gallery__item">
-        <img src="images/dombai.jpg" alt="Домбай" class="gallery__photo">
-        <div class="gallery__caption">
-          <h2 class="gallery__item-descr">Домбай</h2>
-          <button type="button" class="gallery__like-button button-hover">
-            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
-          </button>
-        </div>
-      </div>
-      <div class="gallery__item">
-        <img src="images/karachaevsk.jpg" alt="Карачаево-Черкессия" class="gallery__photo">
-        <div class="gallery__caption">
-          <h2 class="gallery__item-descr">Карачаево-Черкессия</h2>
-          <button type="button" class="gallery__like-button button-hover">
-            <img src="images/like-icon.svg" alt="Нравится" class="gallery__like-icon">
-          </button>
-        </div>
-      </div>
-    </section>
+    <section class="gallery"></section>
   </main>
 
   <footer class="footer">
-    <p class="footer__copyright">© 2020 Mesto Russia</p>
+    <p class="footer__copyright">© 2022 Mesto Russia</p>
   </footer>
 
-  <div class="popup">
+  <template class="gallery-item-template">
+    <div class="gallery__item">
+      <img src="#" alt="" class="gallery__photo">
+      <button type="button" class="gallery__del-button button-hover"></button>
+      <div class="gallery__caption">
+        <h2 class="gallery__item-descr"></h2>
+        <button type="button" class="gallery__like-button button-hover"></button>
+      </div>
+    </div>
+  </template>
+
+  <div class="popup popup_section_profile">
     <div class="popup__container">
       <h2 class="popup__header">Редактировать профиль</h2>
-      <form class="popup__form" name="profile-edit-form">
+      <form class="popup__form popup__form_section_profile" name="profile-edit-form">
         <input type="text" class="popup__input popup__input_personal-data_name" name="personal-data_name">
-        <input type="text" class="popup__input popup__input_personal-data_about-me" name="ppersonal-data_about-me">
-        <input type="submit" class="popup__save-button button-hover" value="Сохранить">
+        <input type="text" class="popup__input popup__input_personal-data_about-me" name="personal-data_about-me">
+        <input type="submit" class="popup__submit button-hover" value="Сохранить">
       </form>
+      <button type="button" class="popup__close-button button-hover">
+        <img src="images/сlose-icon.svg" alt="Закрыть" class="popup__close-icon">
+      </button>
+    </div>
+  </div>
+
+  <div class="popup popup_section_gallery">
+    <div class="popup__container">
+      <h2 class="popup__header">Новое место</h2>
+      <form class="popup__form popup__form_section_gallery" name="card-add-form">
+        <input type="text" class="popup__input popup__input_card_name" name="card_name" placeholder="Название">
+        <input type="text" class="popup__input popup__input_card_link" name="card_link"
+          placeholder="Ссылка на картинку">
+        <input type="submit" class="popup__submit button-hover" value="Создать">
+      </form>
+      <button type="button" class="popup__close-button button-hover">
+        <img src="images/сlose-icon.svg" alt="Закрыть" class="popup__close-icon">
+      </button>
+    </div>
+  </div>
+
+  <div class="popup popup_section_zoom-in">
+    <div class="popup__figure">
+      <img class="popup__photo" src="#" alt="">
+      <p class="popup__caption"></p>
       <button type="button" class="popup__close-button button-hover">
         <img src="images/сlose-icon.svg" alt="Закрыть" class="popup__close-icon">
       </button>
