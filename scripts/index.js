@@ -35,49 +35,15 @@ const cardLinkInput = document.querySelector('.popup__input_card_link');
 //увеличенная картинка и подпись к ней
 const zoomedPhoto = document.querySelector('.popup__photo');
 const zoomedCaption = document.querySelector('.popup__caption');
-
-//первоначальный массив карточек
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 //<<< ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 
 //ОБЪЯВЛЕНИЕ ФУНКЦИЙ >>>
-function openPopupProfile() { //открытие попапа редактирования профиля с данными профиля
-  popupProfile.classList.add('popup_opened');
-  nameInput.value = profileName.textContent;
-  aboutMeInput.value = profileAboutMe.textContent;
+function openPopup(popup) { //открытие попапа
+  popup.classList.add('popup_opened');
 }
 
-function openPopupGallery() { //открытие попапа добавления карточки в галерею
-  popupGallery.classList.add('popup_opened');
-}
-
-function openPopupZoomIn() { //открытие попапа увеличения картинки
-  popupZoomIn.classList.add('popup_opened');
+function initiateInput(input, node) { //инициация инпута текстовыми данными
+  input.value = node.textContent;
 }
 
 function closePopup(popup) { //закрытие попапа
@@ -121,13 +87,20 @@ function zoomIn(item) { //увеличение картинки (попап)
   zoomedPhoto.src = item.link;
   zoomedPhoto.alt = item.name;
   zoomedCaption.textContent = item.name;
-  openPopupZoomIn();
+  openPopup(popupZoomIn);
 };
 //<<< ОБЪЯВЛЕНИЕ ФУНКЦИЙ
 
 //ПРИВЯЗКА СЛУШАТЕЛЕЙ СОБЫТИЙ >>>
-editButton.addEventListener('click', openPopupProfile); //кнопка редактирования профиля
-addButton.addEventListener('click', openPopupGallery); //кнопка добавления карточки
+editButton.addEventListener('click', () => { //кнопка редактирования профиля
+  openPopup(popupProfile);
+  initiateInput(nameInput, profileName);
+  initiateInput(aboutMeInput, profileAboutMe);
+}); 
+
+addButton.addEventListener('click', () => { //кнопка добавления карточки
+  openPopup(popupGallery);
+});
 
 closeButtons.forEach(item => { //кнопки закрытия для всех попапов
   item.addEventListener('click', evt => {
