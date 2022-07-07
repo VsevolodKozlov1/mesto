@@ -12,6 +12,7 @@ const addButton = document.querySelector('.profile__add-button');
 const closeButtons = document.querySelectorAll('.popup__close-button'); //кнопка закрытия универсальная для всех попапов
 
 //попапы
+const allPopups = document.querySelectorAll('.popup');
 const popupProfile = document.querySelector('.popup_section_profile');
 const popupGallery = document.querySelector('.popup_section_gallery');
 const popupZoomIn = document.querySelector('.popup_section_zoom-in');
@@ -20,15 +21,15 @@ const popupZoomIn = document.querySelector('.popup_section_zoom-in');
 const galleryItemTemplate = document.querySelector('.gallery-item-template').content;
 const galleryItem = galleryItemTemplate.querySelector('.gallery__item');
 
-//формы редактирования профиля и добавления карточки
+//формы
+const allForms = document.querySelectorAll('.popup__form');
 const formProfile = document.querySelector('.popup__form_section_profile');
 const formGallery = document.querySelector('.popup__form_section_gallery');
 
-//поля формы редактирования профиля
+//инпуты
+const allInputs = document.querySelectorAll('.popup__input');
 const nameInput = document.querySelector('.popup__input_personal-data_name');
 const aboutMeInput = document.querySelector('.popup__input_personal-data_about-me');
-
-//поля формы добавления карточки
 const cardNameInput = document.querySelector('.popup__input_card_name');
 const cardLinkInput = document.querySelector('.popup__input_card_link');
 
@@ -38,16 +39,18 @@ const zoomedCaption = document.querySelector('.popup__caption');
 //<<< ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 
 //ОБЪЯВЛЕНИЕ ФУНКЦИЙ >>>
-function openPopup(popup) { //открытие попапа
-  popup.classList.add('popup_opened');
+function openPopup(popupItem) { //открытие попапа
+  popupItem.classList.add('popup_opened');
+  document.addEventListener('keydown', closeByEsc);
 }
 
 function initiateInput(input, node) { //инициация инпута текстовыми данными
   input.value = node.textContent;
 }
 
-function closePopup(popup) { //закрытие попапа
-  popup.classList.remove('popup_opened');
+function closePopup(popupItem) { //закрытие попапа
+  popupItem.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeByEsc);
 }
 
 function editProfileData(evt) { //редактирование профиля
@@ -89,6 +92,12 @@ function zoomIn(item) { //увеличение картинки (попап)
   zoomedCaption.textContent = item.name;
   openPopup(popupZoomIn);
 };
+
+function closeByEsc(evt) { //закрытие попапов по кнопке Esc
+  if (evt.key === "Escape") {
+    closePopup(document.querySelector('.popup_opened'));
+  };
+};
 //<<< ОБЪЯВЛЕНИЕ ФУНКЦИЙ
 
 //ПРИВЯЗКА СЛУШАТЕЛЕЙ СОБЫТИЙ >>>
@@ -96,7 +105,7 @@ editButton.addEventListener('click', () => { //кнопка редактиров
   openPopup(popupProfile);
   initiateInput(nameInput, profileName);
   initiateInput(aboutMeInput, profileAboutMe);
-}); 
+});
 
 addButton.addEventListener('click', () => { //кнопка добавления карточки
   openPopup(popupGallery);
@@ -119,8 +128,13 @@ formGallery.addEventListener('submit', evt => { //сабмит добавлен�
   evt.target.reset();
   closePopup(popupGallery);
 });
-//<<< ПРИВЯЗКА СЛУШАТЕЛЕЙ СОБЫТИЙ
 
+allPopups.forEach(item => { //закрытие попапов по клику по оверлею
+  item.addEventListener('mousedown', evt => {
+    closePopup(evt.target);
+  });
+});
+//<<< ПРИВЯЗКА СЛУШАТЕЛЕЙ СОБЫТИЙ
 
 initialCards.forEach((item) => { //создание всех карточек из первоначального массива
   const galleryItem = createGalleryItem(item);
