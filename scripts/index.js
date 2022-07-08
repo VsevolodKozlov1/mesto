@@ -9,7 +9,6 @@ const gallery = document.querySelector('.gallery');
 //кнопки
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
-const closeButtons = document.querySelectorAll('.popup__close-button'); //кнопка закрытия универсальная для всех попапов
 
 //попапы
 const allPopups = document.querySelectorAll('.popup');
@@ -32,6 +31,11 @@ const nameInput = document.querySelector('.popup__input_personal-data_name');
 const aboutMeInput = document.querySelector('.popup__input_personal-data_about-me');
 const cardNameInput = document.querySelector('.popup__input_card_name');
 const cardLinkInput = document.querySelector('.popup__input_card_link');
+
+//сабмиты
+const allSubmits = document.querySelectorAll('.popup__submit');
+const submitProfile = document.querySelector('.popup__submit_section_profile');
+const submitGallery = document.querySelector('.popup__submit_section_gallery');
 
 //увеличенная картинка и подпись к ней
 const zoomedPhoto = document.querySelector('.popup__photo');
@@ -109,11 +113,17 @@ editButton.addEventListener('click', () => { //кнопка редактиров
 
 addButton.addEventListener('click', () => { //кнопка добавления карточки
   openPopup(popupGallery);
+  submitGallery.setAttribute('disabled', '');
 });
 
-closeButtons.forEach(item => { //кнопки закрытия для всех попапов
-  item.addEventListener('click', evt => {
-    closePopup(evt.target.closest('.popup'));
+allPopups.forEach((popup) => { //закрытие попапов по клику по оверлею или по крестику
+  popup.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_opened')) {
+          closePopup(popup);
+      };
+      if (evt.target.classList.contains('popup__close-button')) {
+        closePopup(popup);
+      };
   });
 });
 
@@ -124,15 +134,9 @@ formGallery.addEventListener('submit', evt => { //сабмит добавлен�
     link: cardLinkInput.value,
     name: cardNameInput.value
   };
-  gallery.append(createGalleryItem(item));
+  gallery.prepend(createGalleryItem(item));
   evt.target.reset();
   closePopup(popupGallery);
-});
-
-allPopups.forEach(item => { //закрытие попапов по клику по оверлею
-  item.addEventListener('mousedown', evt => {
-    closePopup(evt.target);
-  });
 });
 //<<< ПРИВЯЗКА СЛУШАТЕЛЕЙ СОБЫТИЙ
 
