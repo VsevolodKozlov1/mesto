@@ -1,7 +1,15 @@
+import {initialCards, configGlobal} from './constants.js';
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
 //ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ >>>
 //разделы профиля "Имя" и "О себе"
 const profileName = document.querySelector('.profile__name');
 const profileAboutMe = document.querySelector('.profile__about-me');
+
+//элементы шаблона карточки
+const galleryItemTemplate = document.querySelector('.gallery-item-template').content;
+const galleryItem = galleryItemTemplate.querySelector('.gallery__item');
 
 //раздел "Галерея", куда будем вставлять карточки
 const gallery = document.querySelector('.gallery');
@@ -15,10 +23,6 @@ const allPopups = document.querySelectorAll('.popup');
 const popupProfile = document.querySelector('.popup_section_profile');
 const popupGallery = document.querySelector('.popup_section_gallery');
 const popupZoomIn = document.querySelector('.popup_section_zoom-in');
-
-//элементы шаблона карточки
-const galleryItemTemplate = document.querySelector('.gallery-item-template').content;
-const galleryItem = galleryItemTemplate.querySelector('.gallery__item');
 
 //формы
 const allForms = document.querySelectorAll('.popup__form');
@@ -64,33 +68,7 @@ function editProfileData(evt) { //редактирование профиля
   closePopup(evt.target.closest('.popup'));
 }
 
-//создание элемента галереи (карточки)
-function createGalleryItem(item) {
-  const newGalleryItem = galleryItem.cloneNode(true);
-  const newGalleryPhoto = newGalleryItem.querySelector('.gallery__photo');
-  newGalleryItem.querySelector('.gallery__item-descr').textContent = item.name;
-  newGalleryPhoto.src = item.link;
-  newGalleryPhoto.alt = item.name;
-  //кнопка "лайка"
-  const likeButton = newGalleryItem.querySelector('.gallery__like-button');
-  //слушатель "лайка"
-  likeButton.addEventListener('click', () => {
-    likeButton.classList.toggle('gallery__like-button_active');
-  });
-  //кнопка удаления карточки
-  const delButton = newGalleryItem.querySelector('.gallery__del-button');
-  //слушатель удаления
-  delButton.addEventListener('click', () => {
-    newGalleryItem.remove();
-  });
-  //слушатель увеличения
-  newGalleryPhoto.addEventListener('click', () => {
-    zoomIn(item);
-  });
-  return newGalleryItem;
-};
-
-function zoomIn(item) { //увеличение картинки (попап)
+export default function zoomIn(item) { //увеличение картинки (попап)
   zoomedPhoto.src = item.link;
   zoomedPhoto.alt = item.name;
   zoomedCaption.textContent = item.name;
@@ -118,29 +96,33 @@ addButton.addEventListener('click', () => { //кнопка добавления 
 
 allPopups.forEach((popup) => { //закрытие попапов по клику по оверлею или по крестику
   popup.addEventListener('mousedown', (evt) => {
-      if (evt.target.classList.contains('popup_opened')) {
-          closePopup(popup);
-      };
-      if (evt.target.classList.contains('popup__close-button')) {
-        closePopup(popup);
-      };
+    if (evt.target.classList.contains('popup_opened') ||
+    evt.target.classList.contains('popup__close-button')) {
+      closePopup(popup);
+    };
   });
 });
 
 formProfile.addEventListener('submit', editProfileData); //сабмит редактирования профиля
 formGallery.addEventListener('submit', evt => { //сабмит добавления карточки
   evt.preventDefault();
-  const item = {
+  const cardData = {
     link: cardLinkInput.value,
     name: cardNameInput.value
   };
-  gallery.prepend(createGalleryItem(item));
+  const card = new Card(cardData, '.gallery-item-template');
+  gallery.prepend(card.generateCard());
   evt.target.reset();
   closePopup(popupGallery);
 });
 //<<< ПРИВЯЗКА СЛУШАТЕЛЕЙ СОБЫТИЙ
 
-initialCards.forEach((item) => { //создание всех карточек из первоначального массива
-  const galleryItem = createGalleryItem(item);
-  gallery.prepend(galleryItem);
+initialCards.forEach(cardData => { //создание всех карточек из первоначального массива
+  const card = new Card(cardData, '.gallery-item-template');
+  gallery.prepend(card.generateCard());
 });
+
+allForms.forEach(form => {
+  const formValidation = new FormValidator(configGlobal, form);
+  formValidation.enableValidation();
+})
