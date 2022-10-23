@@ -6,6 +6,7 @@ export default class FormValidator {
             .querySelectorAll(this._config.inputSelector));
         this._submitOfCurrentForm = this._formElement
             .querySelector(this._config.submitButtonSelector);
+        this._buttonHoverClass = config.buttonHoverClass;
     }
 
     _toggleInvalidInput(input, isValid, invalidClass) {
@@ -25,17 +26,17 @@ export default class FormValidator {
     _toggleSubmitAvailability(submitButton, shouldBeAvailable) {
         if (shouldBeAvailable) {
             submitButton.removeAttribute('disabled');
-            submitButton.classList.add('button-hover');
+            submitButton.classList.add(this._buttonHoverClass);
         } else {
             submitButton.setAttribute('disabled', '');
-            submitButton.classList.remove('button-hover');
+            submitButton.classList.remove(this._buttonHoverClass);
         };
     };
 
     enableValidation() {
         this._allInputsOfCurrentForm.forEach(currentInput => {
             const errorSpanSelector = `.${this._config.spanErrorClass}_${currentInput.name}`;
-            const errorSpan = document.querySelector(errorSpanSelector);
+            const errorSpan = this._formElement.querySelector(errorSpanSelector);
 
             currentInput.addEventListener('input', () => {
                 errorSpan.textContent = currentInput.validationMessage;

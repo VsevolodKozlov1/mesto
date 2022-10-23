@@ -1,9 +1,9 @@
-import zoomIn from './index.js';
+import { zoomIn } from './utils/utils.js';
 
 export default class Card {
-    constructor(cardData, cardTemplateSelector) {
+    constructor(cardData, config) {
         this._cardData = cardData;
-        this._cardTemplateSelector = cardTemplateSelector;
+        this._cardTemplateSelector = config.cardTemplateSelector;
         this._cardItem = document
             .querySelector(this._cardTemplateSelector)
             .content
@@ -12,6 +12,7 @@ export default class Card {
         this._cardPhoto = this._cardItem.querySelector('.gallery__photo');
         this._likeButton = this._cardItem.querySelector('.gallery__like-button');
         this._delButton = this._cardItem.querySelector('.gallery__del-button');
+        this._popupZoomInSelector = config.popupZoomInSelector;
     }
 
     _createCardText() {
@@ -24,20 +25,29 @@ export default class Card {
         this._cardPhoto.src = this._cardData.link;
         this._cardPhoto.alt = this._cardData.name;
         this._cardPhoto.addEventListener('click', () => {
-            zoomIn(this._cardData);
+            zoomIn(this._cardData, this._popupZoomInSelector);
         });
+    }
+
+    _toggleLikeButton() {
+        this._likeButton.classList.toggle('gallery__like-button_active');
     }
 
     _listenLikeButton() {
         this._likeButton.addEventListener('click', () => {
-            this._likeButton.classList.toggle('gallery__like-button_active');
-            });
+            this._toggleLikeButton();
+        });
+    }
+
+    _removeCardItem() {
+        this._cardItem.remove();
+        this._cardItem.innerHTML = '';
     }
 
     _listenDelButton() {
         this._delButton.addEventListener('click', () => {
-            this._cardItem.remove();
-            });
+            this._removeCardItem();
+        });
     }
 
     generateCard() {

@@ -1,4 +1,11 @@
-import {initialCards, configGlobal} from './constants.js';
+import {
+  openPopup,
+  initiateInput,
+  closePopup,
+  editProfileData,
+  closeByEsc
+} from './utils/utils.js';
+import { initialCards, configGlobal } from './constants.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
@@ -15,8 +22,8 @@ const galleryItem = galleryItemTemplate.querySelector('.gallery__item');
 const gallery = document.querySelector('.gallery');
 
 //кнопки
-const editButton = document.querySelector('.profile__edit-button');
-const addButton = document.querySelector('.profile__add-button');
+const popupProfileOpenButton = document.querySelector('.profile__edit-button');
+const popupNewCardButton = document.querySelector('.profile__add-button');
 
 //попапы
 const allPopups = document.querySelectorAll('.popup');
@@ -38,66 +45,27 @@ const cardLinkInput = document.querySelector('.popup__input_card_link');
 
 //сабмиты
 const allSubmits = document.querySelectorAll('.popup__submit');
-const submitProfile = document.querySelector('.popup__submit_section_profile');
-const submitGallery = document.querySelector('.popup__submit_section_gallery');
+const profileSubmit = document.querySelector('.popup__submit_section_profile');
+const gallerySubmit = document.querySelector('.popup__submit_section_gallery');
 
-//увеличенная картинка и подпись к ней
-const zoomedPhoto = document.querySelector('.popup__photo');
-const zoomedCaption = document.querySelector('.popup__caption');
 //<<< ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 
-//ОБЪЯВЛЕНИЕ ФУНКЦИЙ >>>
-function openPopup(popupItem) { //открытие попапа
-  popupItem.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEsc);
-}
-
-function initiateInput(input, node) { //инициация инпута текстовыми данными
-  input.value = node.textContent;
-}
-
-function closePopup(popupItem) { //закрытие попапа
-  popupItem.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeByEsc);
-}
-
-function editProfileData(evt) { //редактирование профиля
-  evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileAboutMe.textContent = aboutMeInput.value;
-  closePopup(evt.target.closest('.popup'));
-}
-
-export default function zoomIn(item) { //увеличение картинки (попап)
-  zoomedPhoto.src = item.link;
-  zoomedPhoto.alt = item.name;
-  zoomedCaption.textContent = item.name;
-  openPopup(popupZoomIn);
-};
-
-function closeByEsc(evt) { //закрытие попапов по кнопке Esc
-  if (evt.key === "Escape") {
-    closePopup(document.querySelector('.popup_opened'));
-  };
-};
-//<<< ОБЪЯВЛЕНИЕ ФУНКЦИЙ
-
 //ПРИВЯЗКА СЛУШАТЕЛЕЙ СОБЫТИЙ >>>
-editButton.addEventListener('click', () => { //кнопка редактирования профиля
+popupProfileOpenButton.addEventListener('click', () => { //кнопка редактирования профиля
   openPopup(popupProfile);
   initiateInput(nameInput, profileName);
   initiateInput(aboutMeInput, profileAboutMe);
 });
 
-addButton.addEventListener('click', () => { //кнопка добавления карточки
+popupNewCardButton.addEventListener('click', () => { //кнопка добавления карточки
   openPopup(popupGallery);
-  submitGallery.setAttribute('disabled', '');
+  gallerySubmit.setAttribute('disabled', '');
 });
 
 allPopups.forEach((popup) => { //закрытие попапов по клику по оверлею или по крестику
   popup.addEventListener('mousedown', (evt) => {
     if (evt.target.classList.contains('popup_opened') ||
-    evt.target.classList.contains('popup__close-button')) {
+      evt.target.classList.contains('popup__close-button')) {
       closePopup(popup);
     };
   });
@@ -110,7 +78,7 @@ formGallery.addEventListener('submit', evt => { //сабмит добавлен�
     link: cardLinkInput.value,
     name: cardNameInput.value
   };
-  const card = new Card(cardData, '.gallery-item-template');
+  const card = new Card(cardData, configGlobal);
   gallery.prepend(card.generateCard());
   evt.target.reset();
   closePopup(popupGallery);
@@ -118,11 +86,13 @@ formGallery.addEventListener('submit', evt => { //сабмит добавлен�
 //<<< ПРИВЯЗКА СЛУШАТЕЛЕЙ СОБЫТИЙ
 
 initialCards.forEach(cardData => { //создание всех карточек из первоначального массива
-  const card = new Card(cardData, '.gallery-item-template');
+  const card = new Card(cardData, configGlobal);
   gallery.prepend(card.generateCard());
 });
 
-allForms.forEach(form => {
-  const formValidation = new FormValidator(configGlobal, form);
-  formValidation.enableValidation();
-})
+//инстанцирование экземпляров класса FormValidator и активация валидации для них в global scope
+const formProfileValidation = new FormValidator(configGlobal, formProfile);
+formProfileValidation.enableValidation();
+
+const formGalleryValidation = new FormValidator(configGlobal, formGallery);
+formGalleryValidation.enableValidation();
