@@ -1,7 +1,5 @@
-import { zoomIn } from './utils/utils.js';
-
 export default class Card {
-    constructor(cardData, config) {
+    constructor(cardData, config, handleCardClick) {
         this._cardData = cardData;
         this._cardTemplateSelector = config.cardTemplateSelector;
         this._cardItem = document
@@ -13,6 +11,7 @@ export default class Card {
         this._likeButton = this._cardItem.querySelector('.gallery__like-button');
         this._delButton = this._cardItem.querySelector('.gallery__del-button');
         this._popupZoomInSelector = config.popupZoomInSelector;
+        this._handleCardClick = handleCardClick;
     }
 
     _createCardText() {
@@ -24,9 +23,7 @@ export default class Card {
     _createCardPhoto() {
         this._cardPhoto.src = this._cardData.link;
         this._cardPhoto.alt = this._cardData.name;
-        this._cardPhoto.addEventListener('click', () => {
-            zoomIn(this._cardData, this._popupZoomInSelector);
-        });
+        this._cardPhoto.addEventListener('click', this._handleCardClick);
     }
 
     _toggleLikeButton() {
