@@ -2,18 +2,9 @@
 const popupProfileEditButton = document.querySelector('.profile__edit-button');
 const popupNewCardButton = document.querySelector('.profile__add-button');
 
-//формы
-const formProfile = document.querySelector('.popup__form_section_profile');
-const formGallery = document.querySelector('.popup__form_section_gallery');
-
 //инпуты
 const nameInput = document.querySelector('.popup__input_personal-data_name');
 const aboutMeInput = document.querySelector('.popup__input_personal-data_about-me');
-const cardNameInput = document.querySelector('.popup__input_card_name');
-const cardLinkInput = document.querySelector('.popup__input_card_link');
-
-//сабмит галереи
-const gallerySubmit = document.querySelector('.popup__submit_section_gallery');
 
 const initialCards = [
   {
@@ -45,6 +36,10 @@ const initialCards = [
 const configGlobal = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
+  nameInputProfileName: 'personal-data_name',
+  nameInputProfileAboutMe: 'personal-data_about-me',
+  nameInputCardName: 'card_name',
+  nameInputCardLink: 'card_link',
   submitButtonSelector: '.popup__submit',
   popupProfileSelector: '.popup_section_profile',
   popupNewCardSelector: '.popup_section_gallery',
@@ -63,13 +58,8 @@ const configGlobal = {
 export { 
   popupProfileEditButton,
   popupNewCardButton,
-  formProfile,
-  formGallery,
   nameInput,
   aboutMeInput,
-  cardNameInput,
-  cardLinkInput,
-  gallerySubmit,
   initialCards,
   configGlobal
 };

@@ -23,35 +23,27 @@ export default class Card {
     _createCardPhoto() {
         this._cardPhoto.src = this._cardData.link;
         this._cardPhoto.alt = this._cardData.name;
-        this._cardPhoto.addEventListener('click', this._handleCardClick);
     }
 
     _toggleLikeButton() {
         this._likeButton.classList.toggle('gallery__like-button_active');
     }
 
-    _listenLikeButton() {
-        this._likeButton.addEventListener('click', () => {
-            this._toggleLikeButton();
-        });
-    }
-
     _removeCardItem() {
         this._cardItem.remove();
-        this._cardItem.innerHTML = '';
+        this._cardItem = null;
     }
 
-    _listenDelButton() {
-        this._delButton.addEventListener('click', () => {
-            this._removeCardItem();
-        });
+    _setEventListeners() {
+        this._cardPhoto.addEventListener('click', this._handleCardClick);
+        this._likeButton.addEventListener('click', this._toggleLikeButton.bind(this));
+        this._delButton.addEventListener('click', this._removeCardItem.bind(this));
     }
 
     generateCard() {
         this._createCardText();
         this._createCardPhoto();
-        this._listenLikeButton();
-        this._listenDelButton();
+        this._setEventListeners();
         return this._cardItem;
     }
 }

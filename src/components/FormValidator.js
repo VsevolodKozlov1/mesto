@@ -9,11 +9,11 @@ export default class FormValidator {
         this._buttonHoverClass = config.buttonHoverClass;
     }
 
-    _toggleInvalidInput(input, isValid, invalidClass) {
+    _toggleInvalidInput(inputElement, isValid, invalidClass) {
         if (isValid) {
-            input.classList.remove(invalidClass);
+            inputElement.classList.remove(invalidClass);
         } else {
-            input.classList.add(invalidClass);
+            inputElement.classList.add(invalidClass);
         };
     }
 
@@ -31,7 +31,14 @@ export default class FormValidator {
             submitButton.setAttribute('disabled', '');
             submitButton.classList.remove(this._buttonHoverClass);
         };
-    };
+    }
+
+    _hideError(inputElement) {
+        inputElement.classList.remove(this._config.inputInvalidClass);
+        const errorSpanSelector = `.${this._config.spanErrorClass}_${inputElement.name}`;
+        const errorSpan = this._formElement.querySelector(errorSpanSelector);
+        errorSpan.textContent = '';
+    }
 
     enableValidation() {
         this._allInputsOfCurrentForm.forEach(currentInput => {
@@ -45,7 +52,14 @@ export default class FormValidator {
                     this._config.inputInvalidClass);
                 this._toggleSubmitAvailability(this._submitOfCurrentForm,
                     this._isFormValid());
-            })
+            });
         });
-    };
+    }
+
+    resetValidation() {
+        this._toggleSubmitAvailability(this._submitOfCurrentForm, false);
+        this._allInputsOfCurrentForm.forEach((inputElement) => {
+            this._hideError(inputElement);
+        });
+    }
 }
