@@ -2,6 +2,7 @@
     width: 68.75%;
     margin: 40px auto 0;
     display: flex;
+    position: relative;
 }
 
 @media screen and (max-width: 1023px) {
@@ -15,7 +16,6 @@
         margin-top: 42px;
         flex-direction: column;
         align-items: center;
-        position: relative;
     }
 }
 

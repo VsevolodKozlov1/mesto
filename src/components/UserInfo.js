@@ -1,20 +1,31 @@
 export default class UserInfo {
-    constructor({ userNameSelector, userAboutMeSelector }) {
-        this._userNameSelector = userNameSelector;
-        this._userAboutMeSelector = userAboutMeSelector;
-        this._userName = document.querySelector(this._userNameSelector);
-        this._userAboutMe = document.querySelector(this._userAboutMeSelector)
-    }
+    constructor(config, handleAvatarChange) {
+        this._userNameSelector = config.userNameSelector;
+        this._userAboutMeSelector = config.userAboutMeSelector;
+        this._avatarSelector = config.avatarSelector;
+        this._avatarOverlaySelector = config.avatarOverlaySelector;
+        this.userName = document.querySelector(this._userNameSelector);
+        this.userAboutMe = document.querySelector(this._userAboutMeSelector);
+        this.avatar = document.querySelector(this._avatarSelector);
+        this.avatarOverlay = document.querySelector(this._avatarOverlaySelector);
+        this._handleAvatarChange = handleAvatarChange;
+      }
 
     getUserInfo() {
         return {
-            userName: this._userName.textContent,
-            userAboutMe: this._userAboutMe.textContent
+            userName: this.userName.textContent,
+            userAboutMe: this.userAboutMe.textContent,
+            avatar: this.avatar.src
         }
     }
 
-    setUserInfo({ userName, userAboutMe }) {
-        this._userName.textContent = userName;
-        this._userAboutMe.textContent = userAboutMe;
+    setUserInfo({ userName, userAboutMe, avatarLink }) {
+        this.userName.textContent = userName;
+        this.userAboutMe.textContent = userAboutMe;
+        this.avatar.src = avatarLink;
+    }
+
+    setEventListeners() {
+        this.avatarOverlay.addEventListener('click', this._handleAvatarChange)
     }
 }

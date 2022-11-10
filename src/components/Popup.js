@@ -26,6 +26,6 @@ export default class Popup {
                 evt.target.classList.contains('popup__close-button')) {
                 this.close();
             };
-        })
+        });
     }
 }
