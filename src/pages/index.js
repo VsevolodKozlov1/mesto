@@ -17,7 +17,6 @@ import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
 
 let userID;
-let cardToDelete;
 
 const api = new Api(apiOptions);
 
@@ -25,38 +24,32 @@ function createCard(cardData) {
   const cardObject = new Card(
     cardData,
     configGlobal,
+    userID,
 
     () => {
       popupZoomedImage.open(cardData)
     },
 
     evt => {
-      cardToDelete = evt.target.closest('.gallery__item');
-      popupDeleteCard.open(cardData);
+      popupDeleteCard.open(cardData, evt.target.closest('.gallery__item'));
     },
 
     () => {
-      if (cardObject.isLiked()) { // 8. Постановка и снятие лайка
-        api.decrementLikesCount(cardObject.cardID)
-          .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
-          .catch(err => Promise.reject(err))
+      cardObject.isLiked() // 8. Постановка и снятие лайка
+        ? api.decrementLikesCount(cardObject.cardID)
           .then(fetchedCardData => {
-            cardObject.likes = fetchedCardData.likes;
-            cardObject.likeCounter.textContent = cardObject.likes.length;
-            cardObject.defineLikeState();
+            cardObject.updateLikeData(fetchedCardData);
+            cardObject.renderLikesCount(fetchedCardData);
+            cardObject.renderLikeState();
           })
-          .catch(err => { console.log(err) })
-      } else {
-        api.incrementLikesCount(cardObject.cardID)
-          .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
-          .catch(err => Promise.reject(err))
+          .catch(err => { alert(err) })
+        : api.incrementLikesCount(cardObject.cardID)
           .then(fetchedCardData => {
-            cardObject.likes = fetchedCardData.likes;
-            cardObject.likeCounter.textContent = cardObject.likes.length;
-            cardObject.defineLikeState();
+            cardObject.updateLikeData(fetchedCardData);
+            cardObject.renderLikesCount(fetchedCardData);
+            cardObject.renderLikeState();
           })
-          .catch(err => { console.log(err) })
-      }
+          .catch(err => {  alert(err) })
     });
   const cardElement = cardObject.generateCard();
   return cardElement;
@@ -67,17 +60,14 @@ const cardSection = new Section(
   {
     items: [],
     renderer: item => {
-      item.userID = userID;
       const cardElement = createCard(item);
-      cardSection.addItem(cardElement);
+      cardSection.appendItem(cardElement);
     }
   },
   configGlobal.gallerySelector
 );
 
 api.getUserData()// 1. Загрузка информации о пользователе с сервера
-  .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
-  .catch(err => Promise.reject(err))
   .then(({ about, avatar, name, _id }) => {
     userID = _id;
     userInfo.setUserInfo({
@@ -86,15 +76,13 @@ api.getUserData()// 1. Загрузка информации о пользова
       avatarLink: avatar
     });
   })
-  .catch(err => { console.log(err) })
+  .catch(err => {  alert(err) })
   .then(
     api.getInitialCards()// 2. Загрузка карточек с сервера
-      .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
-      .catch(err => Promise.reject(err))
       .then(data => {
         cardSection.renderItems(data);
       })
-      .catch(err => { console.log(err) })
+      .catch(err => {  alert(err) })
   );
 
 
@@ -111,22 +99,17 @@ const popupAvatar = new PopupWithForm(
   data => {
     popupAvatar.renderLoading(true);
     api.patchAvatar(data[configGlobal.nameInputProfileAvatar])//9. Обновление аватара пользователя
-      .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
-      .catch(err => {
-        console.log(err);
-        Promise.reject(err)
-      })
       .then(({ avatar }) => {
         userInfo.setUserInfo({
           userName: userInfo.userName.textContent,
           userAboutMe: userInfo.userAboutMe.textContent,
           avatarLink: avatar
         });
+        popupAvatar.close();
       })
-      .catch(err => { console.log(err) })
+      .catch(err => { alert(err) })
       .finally(() => {
         popupAvatar.renderLoading(false);
-        popupAvatar.close()
       })
   }
 )
@@ -140,19 +123,17 @@ const popupProfile = new PopupWithForm(
     popupProfile.renderLoading(true);
     api.patchUserData(data[configGlobal.nameInputProfileName], // 3. Редактирование профиля
       data[configGlobal.nameInputProfileAboutMe])
-      .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
-      .catch(err => Promise.reject(err))
       .then(({ name, about }) => {
         userInfo.setUserInfo({
           userName: name,
           userAboutMe: about,
           avatarLink: userInfo.avatar.src
         });
+        popupProfile.close();
       })
-      .catch(err => { console.log(err) })
+      .catch(err => { alert(err) })
       .finally(() => {
         popupProfile.renderLoading(false);
-        popupProfile.close()
       })
   }
 );
@@ -174,15 +155,13 @@ const popupNewCard = new PopupWithForm(
     popupNewCard.renderLoading(true);
     api.postNewCard(data[configGlobal.nameInputCardName], // 4. Добавление новой карточки
       data[configGlobal.nameInputCardLink])
-      .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
-      .catch(err => Promise.reject(err))
       .then(({ name, link, likes, owner }) => {
-        cardSection.addItem(createCard({ name, link, likes, owner, userID }))
+        cardSection.prependItem(createCard({ name, link, likes, owner, userID }));
+        popupNewCard.close();
       })
-      .catch(err => { console.log(err) })
+      .catch(err => { alert(err) })
       .finally(() => {
         popupNewCard.renderLoading(false);
-        popupNewCard.close()
       })
   }
 );
@@ -201,16 +180,16 @@ const popupDeleteCard = new PopupWithConfirmation(
   configGlobal.popupDeleteCardSelector,
   configGlobal,
   targetData => { // 7. Удаление карточки
+    popupDeleteCard.renderLoading(true);
     api.deteteCard(targetData._id)
-      .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
-      .catch(err => Promise.reject(err))
       .then(() => {
-        cardToDelete.remove();
+        popupDeleteCard.removeTargetNode();
+        popupDeleteCard.close();
       })
-      .catch(err => { console.log(err) })
+      .catch(err => { alert(err) })
       .finally(() => {
-        popupDeleteCard.close()
-      })
+        popupDeleteCard.renderLoading(false);
+      });
   });
 
 popupDeleteCard.setEventListeners();

@@ -6,33 +6,6 @@ const popupNewCardButton = document.querySelector('.profile__add-button');
 const nameInput = document.querySelector('.popup__input_personal-data_name');
 const aboutMeInput = document.querySelector('.popup__input_personal-data_about-me');
 
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
 const configGlobal = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -62,13 +35,11 @@ const configGlobal = {
 
 const apiOptions = {
   url: 'https://mesto.nomoreparties.co/v1',
-  token: '05c6cfbb-e2ef-41b5-87c6-d47779894c52',
   cohortID: 'cohort-52',
   headers: {
     authorization: '05c6cfbb-e2ef-41b5-87c6-d47779894c52',
     'Content-Type': 'application/json'
   },
-  _id: '2ed7179f639f399023339296'
 }
 
 export {
@@ -76,7 +47,6 @@ export {
   popupNewCardButton,
   nameInput,
   aboutMeInput,
-  initialCards,
   configGlobal,
   apiOptions
 };

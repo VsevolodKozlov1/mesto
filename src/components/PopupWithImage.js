@@ -8,9 +8,9 @@ export default class PopupWithImage extends Popup {
     }
 
     open(card) {
-        super.open();
         this._zoomedPhoto.src = card.link;
         this._zoomedPhoto.alt = card.name;
         this._zoomedCaption.textContent = card.name;
+        super.open();
     }
 }
