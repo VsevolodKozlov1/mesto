@@ -10,17 +10,22 @@ export default class PopupWithConfirmation extends Popup {
         this._submitValue = this._submit.value;
         this._targetData;
         this._targetNode;
+        this._targetObject;
     }
 
-    open(targetData, targetNode) {
+    open(targetData, targetNode, targetObject) {
         this._targetData = targetData;
         this._targetNode = targetNode;
+        this._targetObject = targetObject;
         super.open();
     }
 
-    removeTargetNode() {
-        this._targetNode.remove();
-        this._targetNode = null;
+    getTargetNode() {
+        return this._targetNode;
+    }
+
+    getTargetObject() {
+        return this._targetObject;
     }
 
     renderLoading(isLoading) {

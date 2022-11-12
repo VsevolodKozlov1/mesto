@@ -88,6 +88,11 @@ export default class Card {
         }
     }
 
+    removeCardNode(cardNode) {
+        cardNode.remove();
+        cardNode = null;
+    }
+
     generateCard() {
         this._createCardText();
         this._createCardPhoto();

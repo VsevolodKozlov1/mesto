@@ -31,7 +31,9 @@ function createCard(cardData) {
     },
 
     evt => {
-      popupDeleteCard.open(cardData, evt.target.closest('.gallery__item'));
+      popupDeleteCard.open(cardData,
+        evt.target.closest('.gallery__item'),
+        cardObject);
     },
 
     () => {
@@ -49,7 +51,7 @@ function createCard(cardData) {
             cardObject.renderLikesCount(fetchedCardData);
             cardObject.renderLikeState();
           })
-          .catch(err => {  alert(err) })
+          .catch(err => { alert(err) })
     });
   const cardElement = cardObject.generateCard();
   return cardElement;
@@ -76,13 +78,13 @@ api.getUserData()// 1. Загрузка информации о пользова
       avatarLink: avatar
     });
   })
-  .catch(err => {  alert(err) })
+  .catch(err => { alert(err) })
   .then(
     api.getInitialCards()// 2. Загрузка карточек с сервера
       .then(data => {
         cardSection.renderItems(data);
       })
-      .catch(err => {  alert(err) })
+      .catch(err => { alert(err) })
   );
 
 
@@ -141,7 +143,7 @@ const popupProfile = new PopupWithForm(
 popupProfile.setEventListeners();
 
 popupProfileEditButton.addEventListener('click', () => {
-  popupProfile.open.bind(popupProfile)();
+  popupProfile.open();
   formValidators['profile-edit-form'].resetValidation();
   const { userName, userAboutMe } = userInfo.getUserInfo();
   nameInput.value = userName;
@@ -183,7 +185,9 @@ const popupDeleteCard = new PopupWithConfirmation(
     popupDeleteCard.renderLoading(true);
     api.deteteCard(targetData._id)
       .then(() => {
-        popupDeleteCard.removeTargetNode();
+        const targetObject = popupDeleteCard.getTargetObject();
+        const targetNode = popupDeleteCard.getTargetNode();
+        targetObject.removeCardNode(targetNode);
         popupDeleteCard.close();
       })
       .catch(err => { alert(err) })

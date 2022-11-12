@@ -7,8 +7,8 @@ export default class Api {
         this._headers = options.headers;
     }
 
-    _handleFetch(fetch) {//изначально делал так, но потом в проектном чате увидел требования
-        return fetch //обрабатывать запрос только в index.js
+    _handleFetch(fetch) {
+        return fetch
             .then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)))
             .catch(err => Promise.reject(err))
     }
