@@ -157,8 +157,8 @@ const popupNewCard = new PopupWithForm(
     popupNewCard.renderLoading(true);
     api.postNewCard(data[configGlobal.nameInputCardName], // 4. Добавление новой карточки
       data[configGlobal.nameInputCardLink])
-      .then(({ name, link, likes, owner }) => {
-        cardSection.prependItem(createCard({ name, link, likes, owner, userID }));
+      .then(cardData => {
+        cardSection.prependItem(createCard(cardData));
         popupNewCard.close();
       })
       .catch(err => { alert(err) })
