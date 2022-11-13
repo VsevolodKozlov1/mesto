@@ -8,6 +8,6 @@
     left: 0;
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s, opacity 0.25s ease-out;
+    transition: all 0.25s ease-out;
     display: flex;
 }
